@@ -51,6 +51,53 @@ public class JDBCUtil {
         return conneccion;
     }
     
+    public PreparedStatement obtenerPreparedStatement(String sql)
+    {
+    
+        try {
+            sentencia = conneccion.prepareStatement(sql);   
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCUtil.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return sentencia;
+    }
+    
+    public ResultSet ejecutarConsulta(PreparedStatement statementSQL)
+    {
+        sentencia = statementSQL;
+        try {
+            resultados = sentencia.executeQuery();
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCUtil.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return resultados;
+    }
+    
+    public void ejecutarActualizacion(PreparedStatement statementSQL)
+    {
+        sentencia = statementSQL;
+        try {
+            sentencia.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCUtil.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void cerrarObjetos()
+    {
+        try {
+            if (resultados != null)
+                resultados.close();
+            if (sentencia != null)
+                sentencia.close();
+            if(conneccion != null)
+                conneccion.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCUtil.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     
     
 }
